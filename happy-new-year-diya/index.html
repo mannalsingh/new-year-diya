@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy New Year Diya ❤️</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:black;overflow:hidden;color:white;text-align:center}
+
+/* FIREWORKS */
+canvas{position:fixed;top:0;left:0;z-index:-1}
+
+/* LOADER */
+#loader{
+    position:fixed;inset:0;background:black;
+    display:flex;flex-direction:column;
+    justify-content:center;align-items:center;
+    z-index:9999
+}
+.spinner{
+    width:60px;height:60px;border:5px solid #444;
+    border-top:5px solid #ff006a;border-radius:50%;
+    animation:spin 1s linear infinite
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* PASSWORD SCREEN */
+#lock{
+    position:fixed;inset:0;
+    background:black;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:9998;
+}
+#lock input{
+    padding:12px 20px;
+    border-radius:25px;
+    border:none;
+    font-size:1rem;
+    text-align:center;
+}
+#lock button{
+    margin-top:15px;
+    padding:12px 28px;
+    border:none;
+    border-radius:25px;
+    background:#ff006a;
+    color:white;
+    font-size:1rem;
+}
+
+/* PAGES */
+.page{
+    height:100vh;
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:20px
+}
+.page.active{display:flex}
+
+h1,h2{animation:glow 2s infinite alternate}
+@keyframes glow{
+    from{text-shadow:0 0 10px white}
+    to{text-shadow:0 0 30px #ff006a}
+}
+
+button{
+    margin:15px;
+    padding:14px 30px;
+    font-size:1.1rem;
+    border:none;border-radius:30px;
+    background:#e680ab;color:white;
+    cursor:pointer
+}
+
+/* TYPEWRITER */
+#typeText{
+    margin-top:25px;
+    font-size:1.2rem;
+    line-height:1.8;
+    max-width:90%
+}
+
+/* QUESTION */
+.question{
+    margin-top:30px;
+    font-size:1.3rem
+}
+.options{
+    margin-top:15px;
+    position:relative;
+    width:260px;
+    height:120px;
+}
+#noBtn{position:absolute}
+
+/* FINAL PAGE */
+#finalPage{
+    background:linear-gradient(135deg,#ff6a88,#ff99ac)
+}
+</style>
+</head>
+
+<body>
+
+<!-- PASSWORD -->
+<div id="lock">
+    <h2>🔐 Enter the secret password</h2>
+    <p style="margin:10px 0">Sirf Diya ke liye ❤️</p>
+    <input type="password" id="pass" placeholder="Password">
+    <button onclick="checkPass()">Unlock ❤️</button>
+</div>
+
+<div id="loader" style="display:none">
+
+    <div class="spinner"></div>
+    <p style="margin-top:15px">Loading your surprise ❤️</p>
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="fireworks"></canvas>
+
+<!-- PAGE 1 -->
+<div class="page" id="page1">
+
+    <h1>🎆 Happy New Year 2026 Diya ❤️ 🎆</h1>
+    <button onclick="openLove()">Mujhe Click Kro Diyuu ❤️</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+    <h2>Manuu Loves You So Much ❤️</h2>
+    <div id="typeText"></div>
+
+    <div class="question">Do you love Manuu? 🥺</div>
+    <div class="options">
+        <button onclick="yesClick()">YES ❤️</button>
+        <button id="noBtn" onclick="moveNo()">NO 😜</button>
+    </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="finalPage">
+    <h2>Awwww 🥺 Manuu loves you too ❤️</h2>
+</div>
+
+<script>
+/* PASSWORD CHECK */
+function checkPass(){
+    const correct = "diyamannal"; // 🔐 password
+
+    if(pass.value === correct){
+        // password screen hide
+        document.getElementById("lock").style.display = "none";
+
+        // loader show
+        const loader = document.getElementById("loader");
+        loader.style.display = "flex";
+
+        // after 2 sec show main page
+        setTimeout(()=>{
+            loader.style.display = "none";
+            document.getElementById("page1").classList.add("active");
+        }, 2000);
+
+    } else {
+        alert("Wrong password 😜 Try again");
+    }
+}
+
+
+/* MUSIC */
+document.addEventListener("click",()=>bgMusic.play(),{once:true})
+
+/* TYPEWRITER */
+const lines=[
+"Diya ❤️",
+"Aap Meri Zindagi Ka Sbse Khubsurat Hissa ho ✨",
+"Aapki Ek Smile Mera Puura Din Bna Deti Hai 💖",
+"Main hamesha Aapke saath rehna chahta huu 🧿🫶",
+"Jitne bhi SAAL Aaayein Abb Aage Hmesha Mere hii Bnkrr Rehna Diyuuu🧿",
+"I LOVE YOU SO MUCH ❤️"
+];
+let i=0,j=0;
+function typeWriter(){
+    if(i<lines.length){
+        if(j<lines[i].length){
+            typeText.innerHTML+=lines[i].charAt(j);
+            j++;
+            setTimeout(typeWriter,60);
+        }else{
+            typeText.innerHTML+="<br><br>";
+            i++;j=0;
+            setTimeout(typeWriter,500);
+        }
+    }
+}
+
+/* PAGE SWITCH */
+function openLove(){
+    page1.classList.remove("active");
+    page2.classList.add("active");
+    typeWriter();
+}
+function yesClick(){
+    page2.classList.remove("active");
+    finalPage.classList.add("active");
+}
+
+/* NO BUTTON */
+function moveNo(){
+    noBtn.style.left=Math.random()*180+"px";
+    noBtn.style.top=Math.random()*70+"px";
+}
+
+/* FIREWORKS */
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+let fw=[];
+class Firework{
+    constructor(){
+        this.x=Math.random()*canvas.width;
+        this.y=canvas.height;
+        this.ty=Math.random()*canvas.height/2;
+        this.ex=false;
+        this.c=`hsl(${Math.random()*360},100%,60%)`;
+        this.p=[];
+    }
+    update(){
+        if(!this.ex){
+            this.y-=5;
+            if(this.y<this.ty){
+                this.ex=true;
+                for(let i=0;i<30;i++)this.p.push(new Particle(this.x,this.y,this.c));
+            }
+        }else this.p.forEach(p=>p.update());
+    }
+    draw(){
+        if(!this.ex){
+            ctx.fillStyle=this.c;
+            ctx.fillRect(this.x,this.y,3,3);
+        }else this.p.forEach(p=>p.draw());
+    }
+}
+class Particle{
+    constructor(x,y,c){
+        this.x=x;this.y=y;this.c=c;
+        this.a=Math.random()*Math.PI*2;
+        this.s=Math.random()*4+1;
+        this.l=60;
+    }
+    update(){
+        this.x+=Math.cos(this.a)*this.s;
+        this.y+=Math.sin(this.a)*this.s;
+        this.l--;
+    }
+    draw(){
+        ctx.fillStyle=this.c;
+        ctx.fillRect(this.x,this.y,2,2);
+    }
+}
+function animate(){
+    ctx.fillStyle="rgba(0,0,0,0.2)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    fw.forEach((f,i)=>{
+        f.update();f.draw();
+        if(f.ex && f.p.every(p=>p.l<=0))fw.splice(i,1);
+    });
+    if(Math.random()<0.05)fw.push(new Firework());
+    requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
